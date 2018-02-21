@@ -6,15 +6,15 @@
 using namespace std;
 
 void consume(int id) {
-    std::cout << "C" << id << " consume..." << '\n';
+    std::cout << "C" << id << " consume...\n";
     this_thread::sleep_for(std::chrono::seconds(1));
-    std::cout << "C" << id << " fin." << '\n';
+    std::cout << "C" << id << " fin.\n";
 }
 
 void produce() {
-    std::cout << "P1 produce..." << '\n';
+    std::cout << "P1 produce...\n";
     this_thread::sleep_for(std::chrono::seconds(1));
-    std::cout << "P fin." << '\n';
+    std::cout << "P1 fin.\n";
 }
 
 mutex mu;
@@ -24,8 +24,8 @@ void notify() {
     condition.notify_one();
 }
 void wait(int id) {
-    std::cout << "C" << id << " espera..." << '\n';
     unique_lock<mutex> lock(mu);
+    std::cout << "C" << id << " espera...\n";
     condition.wait(lock);
 }
 
