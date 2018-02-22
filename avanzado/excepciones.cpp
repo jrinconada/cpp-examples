@@ -1,9 +1,17 @@
 #include <iostream>
+#include <typeinfo>
 
 /*
     Excepción propia: throw
 */
-void division () {
+int division (int numerator, int denominator) {
+    if (denominator ==  0) {
+        throw "división por 0"; // Se lanza una excepción (salto al catch)
+    }
+    return numerator / denominator;
+}
+
+void inputDivision() {
     int numerator, denominator, result;
     std::cout << "Numerador: ";
     std::cin >> numerator;
@@ -11,10 +19,7 @@ void division () {
     std::cin >> denominator;
 
     try { // Dentro del bloque try se puden lanzar excepciones
-        if (denominator ==  0) {
-            throw "división por 0"; // Se lanza una excepción (salto al catch)
-        }
-        result = numerator / denominator;
+        result = division(numerator, denominator);
     } catch (const char* message) { // Se recibe un dato (puede ser de cualquier tipo)
         // Se gestiona el error (salida por consola de error)
         std::cerr << "Error: " << message << '\n';
@@ -51,7 +56,7 @@ void castingWithErrorChecking () {
 }
 
 int main () {
-    division(); // División entera
+    inputDivision(); // División entera
 
     castingWithErrorChecking(); // Excepción controlada: El programa continúa
 
