@@ -6,12 +6,12 @@
 using namespace std;
 
 void consume() {
-    std::cout << "Consumiendo..." << '\n';
-    this_thread::sleep_for(std::chrono::seconds(5));
+    std::cout << "Consumiendo...\n";
+    this_thread::sleep_for(std::chrono::seconds(3));
 }
 
 void produce() {
-    std::cout << "Produciendo..." << '\n';
+    std::cout << "Produciendo...\n";
     this_thread::sleep_for(std::chrono::seconds(1));
 }
 
@@ -20,11 +20,11 @@ condition_variable condition;
 void notify() {
     unique_lock<mutex> lock(mu);
     condition.notify_one();
-    std::cout << "notify" << '\n';
+    std::cout << "notify\n";
 }
 void wait() {
     unique_lock<mutex> lock(mu);
-    std::cout << "Esperando..." << '\n';
+    std::cout << "Esperando...\n";
     condition.wait(lock);
 }
 
