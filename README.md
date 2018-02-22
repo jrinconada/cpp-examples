@@ -1,4 +1,4 @@
 # C++ Examples
-A collection of C++ examples organized by topic with comments and file names in Spanish.
+A collection of C++ examples organized by topic with explanation comments in Spanish.
 # Ejemplos de C++
-Un conjunto de ejemplos de C++ organizados por tema con comentarios y nombres de fichero en español.
+Un conjunto de ejemplos de C++ organizados por tema con explicaciones mediante comentarios en español.
