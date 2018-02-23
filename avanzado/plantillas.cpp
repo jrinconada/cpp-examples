@@ -4,8 +4,8 @@
 /*  Función genérica
     template indica que se va a crear una platilla
     typename define el nombre del tipo de dato T
-    T se cambia en tiempo de ejecución por un tipo de dato concreto
-    El código de la función se genera en tiempo de ejecución */
+    T se cambia en tiempo de compilación por un tipo de dato concreto
+    El código de la función se genera en tiempo de compilación */
 template <typename T> // También se podría escribir así: template <class T>
 void print (T value) {
     std::cout << value << '\n';
