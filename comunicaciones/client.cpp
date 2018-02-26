@@ -1,5 +1,4 @@
 #include <iostream>
-#include <stdio.h>
 #include <sys/socket.h>
 #include <stdlib.h>
 #include <netinet/in.h>
@@ -7,20 +6,27 @@
 #include <unistd.h> // read
 #include <arpa/inet.h> // inet_aton
 
-int main() {
-    const int port = 8080;
+int main(int argc, char const *argv[]) {
     const int bufferSize = 1024;
-    struct sockaddr_in address;
-    int sock = 0, valread;
-    struct sockaddr_in serverAddress;
-    const char *message = "Hola, hago peticiones";
-    char buffer[bufferSize] = {0};
 
+    // Usar localhost o recibir IP como primer parámetro del programa
+    const char* ip = "127.0.0.1";
+    if (argc > 1) {
+        ip = argv[1];
+    }
+
+    // Usar puerto 8080 o recibirlo como segundo parámetro del programa
+    int port = 8080;
+    if (argc > 2) {
+        port = atoi(argv[2]);
+    }
+
+    int sock = 0;
     /*
         socket: Creación de un socket
-            domain (AF_INET): Address Family IPv4
-            type (SOCK_STREAM): Socket TCP
-            protocol (0): TODO what is that???
+            domain: Address Family IPv4 (AF_INET)
+            type: Socket TCP  (SOCK_STREAM)
+            protocol: Protocolo IP es el 0
         Devuelve un número que representa el descriptor de fichero, -1 en caso de error
     */
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
@@ -28,20 +34,19 @@ int main() {
         return -1;
     }
 
-    memset(&serverAddress, '0', sizeof(serverAddress));
-
-    // TODO This and the next part is a little obscure
-    serverAddress.sin_family = AF_INET;
-    serverAddress.sin_port = htons(port);
-
+    // Dirección del servidor
+    struct sockaddr_in serverAddress;
+    memset(&serverAddress, '0', sizeof(serverAddress)); //
+    serverAddress.sin_family = AF_INET; // Address Family IPv4
+    serverAddress.sin_port = htons(port); // Puerto de Endian de Host a Endian de Network
     /*
         inet_aton: Transforma dirección IP de texto a binario
-            domain (AF_INET): Address Family IPv4
-            text ("127.0.0.1"): IP de la máquina actual (localhost)
-            serv_addr (serverAddress): IP y puerto del servidor
+            domain: Address Family IPv4 (AF_INET)
+            ip_text: IP como cadena de texto
+            serv_addr: IP del servidor
         Devuelve un número mayor que cero si todo va bien
     */
-    if(inet_pton(AF_INET, "127.0.0.1", &serverAddress.sin_addr)<=0) {
+    if(inet_aton(ip, &serverAddress.sin_addr) <= 0) {
         std::cerr << "Error: IP inválida" << '\n';
         return -1;
     }
@@ -58,21 +63,37 @@ int main() {
         return -1;
     }
 
+
+    const char *message = "Hola, hago peticiones";
     /*
         send: Envía un mensaje
             sockfd: Socket file descriptor
             message: Una cadena de texto
             message_len: Tamaño del mensaje
+            flags: Opciones (0 es sin opciones)
+        Devuelve el número de bytes enviados o -1 si hay un error
     */
-    send(sock , message , strlen(message) , 0);
+    send(sock, message, strlen(message), 0);
     std::cout << "Mensaje enviado" << message << '\n';
 
     /*
         read: Leer bytes del Socket
-        sockfd: Socket file descriptor
-        buffer: Almacenamiento de los bytes leídos
-        buffer_len: Tamaño del buffer
+            sockfd: Socket file descriptor
+            buffer: Almacenamiento de los bytes leídos
+            buffer_len: Tamaño del buffer
+        Devuelve el número de bytes leídos o -1 si hay un error
     */
-    valread = read(sock , buffer, bufferSize);
-    std::cout << "Mensaje recibido: " << buffer << '\n';
+    char buffer[bufferSize] = {0};
+    int n = read(sock, buffer, bufferSize);
+    if (n > 0) {
+        std::cout << "Mensaje recibido: " << buffer << '\n';
+    } else {
+        std::cerr << "Error: recepción del mensaje" << '\n';
+    }
+
+    /*
+        close: Cerrar socket
+            sockfd: Socket file descriptor
+    */
+    close(sock);
 }
