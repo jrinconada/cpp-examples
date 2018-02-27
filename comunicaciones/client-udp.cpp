@@ -21,16 +21,29 @@ int main(int argc, char const *argv[]) {
         port = atoi(argv[2]);
     }
 
-    /*
-        socket: Creación de un socket
-            domain: Address Family IPv4 (AF_INET)
-            type: Socket TCP  (SOCK_STREAM)
-            protocol: Con IPPROTO_TCP especificamos TCP
-        Devuelve un número que representa el descriptor de fichero, -1 en caso de error
-    */
-    int sock = socket(AF_INET, SOCK_STREAM, 0);
+    // SOCK_DATAGRAM y IPPROTO_UDP indican que se va a usar UDP
+    int sock = socket(AF_INET, SOCK_DATAGRAM, IPPROTO_UDP);
     if (sock < 0) {
         std::cerr << "Error: creación de socket fallida" << '\n';
+        return -1;
+    }
+
+    // Reutilizar IP y puerto
+    int enable = 1;
+    if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &enable, sizeof(enable))) {
+        std::cerr << "Error: puerto en uso" << '\n';
+        return -1;
+    }
+
+    // Asignar IP y puerto
+    struct sockaddr_in address;
+    address.sin_family = AF_INET; // Address Family IPv4
+    address.sin_addr.s_addr = INADDR_ANY; // IP de esta máquina
+    address.sin_port = htons(port); // Puerto de Endian de Host a Endian de Network
+
+    // Asociar IP y puerto al socket
+    if (bind(sock, (struct sockaddr *)&address, sizeof(address)) < 0) {
+        std::cerr << "Error: bind fallido" << '\n';
         return -1;
     }
 
@@ -39,30 +52,11 @@ int main(int argc, char const *argv[]) {
     memset(&serverAddress, '0', sizeof(serverAddress)); // Limpia estructura serverAddress
     serverAddress.sin_family = AF_INET; // Address Family IPv4
     serverAddress.sin_port = htons(port); // Puerto de Endian de Host a Endian de Network
-    /*
-        inet_aton: Transforma dirección IP de texto a binario
-            domain: Address Family IPv4 (AF_INET)
-            ip_text: IP como cadena de texto
-            serv_addr: IP del servidor
-        Devuelve un número mayor que cero si todo va bien
-    */
+
     if(inet_aton(ip, &serverAddress.sin_addr) <= 0) {
         std::cerr << "Error: IP inválida" << '\n';
         return -1;
     }
-
-    /*
-        connect: Intenta conectar con un servidor
-            sockfd: Socket file descriptor
-            serv_addr: IP y puerto del servidor
-            addrlen: Tamaño de la estructura serv_addr
-        Devuelve -1 si hay un error
-    */
-    if (connect(sock, (struct sockaddr *)&serverAddress, sizeof(serverAddress)) < 0) {
-        std::cerr << "Error: fallo de conexión" << '\n';
-        return -1;
-    }
-
 
     const char *message = "Hola, hago peticiones";
     /*

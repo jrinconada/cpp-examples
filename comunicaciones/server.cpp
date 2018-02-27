@@ -1,42 +1,42 @@
-#include <iostream>
-#include <sys/socket.h>
-#include <stdlib.h>
-#include <netinet/in.h>
+#include <iostream> // cout
+#include <sys/socket.h> // sockaddr, socklen_t
+#include <stdlib.h> // atoi
+#include <netinet/in.h> // sockaddr_in
 #include <string.h> // strlen
-#include <unistd.h> // read
+#include <unistd.h> // read, close
 
 int main(int argc, char const *argv[]) {
     const int bufferSize = 1024;
 
-    // Usar puerto 8080 o recibirlo como segundo parámetro del programa
-    int port = 8080;
+    // Usar puerto 8888 o recibirlo como segundo parámetro del programa
+    int port = 8888;
     if (argc > 2) {
         port = atoi(argv[2]);
     }
 
-    int listeningSocket;
     /*
         socket: Creación del socket de escucha
             domain: Address Family IPv4 (AF_INET)
             type: Socket TCP  (SOCK_STREAM)
-            protocol: Protocolo IP es el 0
+            protocol: Con IPPROTO_TCP especificamos TCP
         Devuelve un número que representa el descriptor de fichero, -1 en caso de error
     */
-    if ((listeningSocket = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
+    int listeningSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    if (listeningSocket < 0) {
         std::cerr << "Error: creación de socket fallida" << '\n';
         return -1;
     }
 
-    int opt = 1;
+    int enable = 1;
     /*
-        setsockopt: Permite resuar IP y puerto
-            sockfd: socket file descriptor
-            level:
-            optname:
-            optval: (1)
-            optlen: Tamaño del valor de opt
+        setsockopt: Modificar opciones de red
+            sockfd: Socket file descriptor
+            level: Nivel de protocolo, para especificar nivel socket es SOL_SOCKET
+            option_name: El nombre de la opción a modificar (SO_REUSEADDR y SO_REUSEPORT)
+            option_val: Valor de la opción 0 desabilitado, 1 habilitado
+            option_len: Tamaño de option_val
     */
-    if (setsockopt(listeningSocket, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt))) {
+    if (setsockopt(listeningSocket, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &enable, sizeof(enable))) {
         std::cerr << "Error: puerto en uso" << '\n';
         return -1;
     }
@@ -71,7 +71,7 @@ int main(int argc, char const *argv[]) {
         return -1;
     }
 
-    int commSocket;
+    std::cout << "Esperando peticiones..." << '\n';
     socklen_t addrlen = sizeof(address);
     /*
         accept: Espera una conexión
@@ -79,7 +79,8 @@ int main(int argc, char const *argv[]) {
         serv_addr: Dirección de donde se espera
         addrlen: Tamaño de serv_addr
     */
-    if ((commSocket = accept(listeningSocket, (struct sockaddr *)&address, &addrlen)) < 0) {
+    int commSocket = accept(listeningSocket, (struct sockaddr *)&address, &addrlen);
+    if (commSocket < 0) {
         std::cerr << "Error: accept fallido" << '\n';
         return -1;
     }
