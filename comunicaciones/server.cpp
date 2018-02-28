@@ -4,6 +4,7 @@
 #include <netinet/in.h> // sockaddr_in
 #include <string.h> // strlen
 #include <unistd.h> // read, close
+#include <arpa/inet.h> // inet_ntoa
 
 int main(int argc, char const *argv[]) {
     const int bufferSize = 1024;
@@ -46,7 +47,7 @@ int main(int argc, char const *argv[]) {
     */
     struct sockaddr_in address;
     address.sin_family = AF_INET; // Address Family IPv4
-    address.sin_addr.s_addr = INADDR_ANY; // IP de esta máquina
+    address.sin_addr.s_addr = INADDR_ANY; // IP 0.0.0.0 (todas las interfaces de red)
     address.sin_port = htons(port); // Puerto de Endian de Host a Endian de Network
 
     /*
@@ -76,7 +77,7 @@ int main(int argc, char const *argv[]) {
     /*
         accept: Espera una conexión
         sockfd: Socket file descriptor
-        serv_addr: Dirección de donde se espera
+        cli_addr: Dirección del cliente
         addrlen: Tamaño de serv_addr
     */
     int commSocket = accept(listeningSocket, (struct sockaddr *)&address, &addrlen);
@@ -84,6 +85,7 @@ int main(int argc, char const *argv[]) {
         std::cerr << "Error: accept fallido" << '\n';
         return -1;
     }
+    std::cout << "Recibida petición de " << inet_ntoa(address.sin_addr) << '\n';
 
     char buffer[bufferSize] = {0};
     /*
