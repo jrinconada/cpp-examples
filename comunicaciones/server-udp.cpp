@@ -47,14 +47,18 @@ int main(int argc, char const *argv[]) {
             sockfd: Socket file descriptor
             buffer: Almacenamiento de los bytes leídos
             buffer_len: Tamaño del buffer
+            flags: Opciones (0 es sin opciones)
+            addr: Dirección de recepción (entrada)
+            addr_len: Tamaño de addr
         Devuelve el número de bytes leídos o -1 si hay un error
     */
-    int n = recvfrom(sock, buffer, bufferSize, 0, );
+    int n = recvfrom(sock, buffer, bufferSize, 0, (struct sockaddr *)&address, sizeof(address));
     if (n > 0) {
         std::cout << "Mensaje recibido: " << buffer << '\n';
     } else {
         std::cerr << "Error: recepción del mensaje" << '\n';
     }
+    std::cout << "Recibida petición de " << inet_ntoa(address.sin_addr) << '\n';
 
     const char *message = "Hola, estoy aquí para servirte";
     /*
@@ -63,9 +67,11 @@ int main(int argc, char const *argv[]) {
             buffer: Mensaje (pueder ser un puntero a cualquier dato)
             n: Número de bytes a enviar
             flags: Opciones (0 es sin opciones)
+            addr: Dirección de recepción
+            addr_len: Tamaño de addr
         Devuelve el número de bytes enviados o -1 si hay un error
     */
-    sendto(sock, message, strlen(message), 0);
+    sendto(sock, message, strlen(message), 0, (struct sockaddr *)&address, sizeof(address));
     std::cout << "Mensaje enviado: " << message << '\n';
 
     /*
