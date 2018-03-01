@@ -24,7 +24,7 @@ int main(int argc, char const *argv[]) {
     */
     int listeningSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (listeningSocket < 0) {
-        std::cerr << "Error: creación de socket fallida" << '\n';
+        std::cerr << "Error: creación de socket" << '\n';
         return -1;
     }
 

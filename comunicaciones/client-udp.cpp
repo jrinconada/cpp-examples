@@ -21,8 +21,8 @@ int main(int argc, char const *argv[]) {
         port = atoi(argv[2]);
     }
 
-    // SOCK_DATAGRAM y IPPROTO_UDP indican que se va a usar UDP
-    int sock = socket(AF_INET, SOCK_DATAGRAM, IPPROTO_UDP);
+    // SOCK_DGRAM y IPPROTO_UDP indican que se va a usar UDP
+    int sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     if (sock < 0) {
         std::cerr << "Error: creación de socket fallida" << '\n';
         return -1;
@@ -60,14 +60,15 @@ int main(int argc, char const *argv[]) {
 
     const char *message = "Hola, hago peticiones";
     /*
-        send: Envía un mensaje
+        sendto: Envía un mensaje a un receptor
             sockfd: Socket file descriptor
-            message: Una cadena de texto
-            message_len: Tamaño del mensaje
+            buffer: Mensaje (pueder ser un puntero a cualquier dato)
+            n: Número de bytes a enviar
             flags: Opciones (0 es sin opciones)
-        Devuelve el número de bytes enviados o -1 si hay un error
+            addr: Dirección de envío
+            addr_len: Tamaño de addr
     */
-    send(sock, message, strlen(message), 0);
+    sendto(sock, message, strlen(message), 0, (struct sockaddr *)&address, sizeof(address));
     std::cout << "Mensaje enviado: " << message << '\n';
 
     /*
