@@ -12,7 +12,7 @@ int main () {
 
     it--;
     // Recorrer elementos usando sólo iteradores
-    while (it++ != goodbyes.end()) {
+    while (++it != goodbyes.end()) {
         std::cout << *it << ' ';
     }
     std::cout << '\n';
