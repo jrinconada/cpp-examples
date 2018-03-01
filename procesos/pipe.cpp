@@ -1,51 +1,32 @@
+#include <iostream> // cout, cerr
+#include <unistd.h> // fork, pipe
+#include <string.h> // strlen
 
-#include <iostream>
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
+int main() {
+    int fd[2]; // El pipe
+    int readBytes; // Bytes leídos
+    pid_t pid; // Process id
+    // char message[] = "Hola, soy tu hijo";
+    char message[] = "Hola, soy tu hijo";
+    char buffer[80];
 
-// Leer texto del pipe e imprimirlo por consola
-void toConsole(int file) {
-    FILE *stream;
-    int c;
-    stream = fdopen(file, "r");
-    while ((c = fgetc(stream)) != EOF) {
-        putchar(c);
-    }
-    fclose(stream);
-}
+    pipe(fd);
 
-// Escribir en el pipe
-void toPipe(int file) {
-    FILE *stream;
-    stream = fdopen(file, "w");
-    fprintf(stream, "Hola hijo\n");
-    fprintf(stream, "¿qué tal?\n");
-    fclose(stream);
-}
-
-int main(void) {
-    pid_t pid;
-    int myPipe[2];
-
-    // Creación de pipe
-    if (pipe (myPipe)) {
-        std::cerr << "Error al crear pipe" << '\n';
-        return -1;
-    }
-
-    pid = fork ();
-    if (pid == 0) {
-        // Proceso hijo
-        close(myPipe[1]);
-        toConsole(myPipe[0]);
-    } else if (pid < 0) {
-        // Error al crear hijo
+    if((pid = fork()) == -1) {
         std::cerr << "Error en el fork" << '\n';
         return -1;
+    }
+
+    if(pid == 0) {
+        // El hijo cierra un lado del pipe
+        close(fd[0]);
+        // Envío del message por el pipe
+        write(fd[1], message, strlen(message) + 1); // +1 (caracter de final de cadena)
     } else {
-        // Proceso padre
-        close(myPipe[0]);
-        toPipe(myPipe[1]);
+        // El padre cierra el otro lado del pipe
+        close(fd[1]);
+        // Leer del pipe
+        readBytes = read(fd[0], buffer, sizeof(buffer));
+        std::cout << buffer << '\n';
     }
 }
