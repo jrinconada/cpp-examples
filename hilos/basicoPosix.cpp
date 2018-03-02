@@ -1,6 +1,7 @@
 #include <iostream>
 #include <pthread.h>
 
+// Compilación con -pthread
 void* task (void*) {
     std::cout << "Soy un hilo" << '\n';
     return NULL;
