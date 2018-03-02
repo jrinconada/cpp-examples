@@ -70,11 +70,11 @@ int main() {
     standardBill.order(3.5);
     standardBill.order(5.4);
     standardBill.print();
-    Bill happtHourBill(new HappyHourStrategy);
-    happtHourBill.order(4);
-    happtHourBill.order(4);
-    happtHourBill.order(4);
-    happtHourBill.order(2.2);
-    happtHourBill.order(3.5);
-    happtHourBill.print();
+    Bill happyHourBill(new HappyHourStrategy);
+    happyHourBill.order(4);
+    happyHourBill.order(4);
+    happyHourBill.order(4);
+    happyHourBill.order(2.2);
+    happyHourBill.order(3.5);
+    happyHourBill.print();
 }
