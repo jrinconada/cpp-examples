@@ -1,5 +1,6 @@
 #include <iostream>
 #include <unistd.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 
@@ -12,7 +13,7 @@ int main () {
         std::cout << "Soy el hijo haciendo cosas..." << '\n';
         sleep(2); // Detener la ejecución 2 segundos
         std::cout << "Soy el hijo y he acabado." << '\n';
-        exit(42);
+        exit(42); // Termina y envía un código de retorno
     } else { // Código del padre
         std::cout << "Estoy esperando a mi hijo..." << '\n';
         pid_t child = wait(&status); // Wait es necesario para no crear procesos "zombie"
