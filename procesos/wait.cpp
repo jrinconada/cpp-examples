@@ -12,9 +12,10 @@ int main () {
         std::cout << "Soy el hijo haciendo cosas..." << '\n';
         sleep(2); // Detener la ejecución 2 segundos
         std::cout << "Soy el hijo y he acabado." << '\n';
+        exit(42);
     } else { // Código del padre
         std::cout << "Estoy esperando a mi hijo..." << '\n';
         wait(&status);
-        std::cout << "Mi hijo ha acabado" << '\n';
+        std::cout << "Mi hijo ha acabado con el código: " << status << '\n';
     }
 }
