@@ -15,7 +15,8 @@ int main () {
         exit(42);
     } else { // Código del padre
         std::cout << "Estoy esperando a mi hijo..." << '\n';
-        pid_t child = wait(&status);
-        std::cout << "Mi hijo " << child << " ha acabado con el código: " << status << '\n';
+        pid_t child = wait(&status); // Wait es necesario para no crear procesos "zombie"
+        // WEXITSTATUS descarta la información extra de status dejando sólo el valor de retorno
+        std::cout << "Mi hijo " << child << " ha acabado con el código: " << WEXITSTATUS(status) << '\n';
     }
 }
