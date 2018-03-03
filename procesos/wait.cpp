@@ -15,7 +15,7 @@ int main () {
         exit(42);
     } else { // Código del padre
         std::cout << "Estoy esperando a mi hijo..." << '\n';
-        wait(&status);
-        std::cout << "Mi hijo ha acabado con el código: " << status << '\n';
+        pid_t child = wait(&status);
+        std::cout << "Mi hijo " << child << " ha acabado con el código: " << status << '\n';
     }
 }
