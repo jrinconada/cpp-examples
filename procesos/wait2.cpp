@@ -11,7 +11,6 @@ void son (int seconds) {
 
 int main () {
     pid_t pid;
-    int status;
 
     pid = fork(); // Se crea un hijo
     if (pid == 0) { // Código del hijo
@@ -22,8 +21,8 @@ int main () {
             son(3); // Otro hijo duerme 3 segundos
         } else {
             std::cout << "Estoy esperando a mis hijos..." << '\n';
-            wait(&status); // Espero a un hijo
-            wait(&status); // Espero a otro hijo
+            wait(NULL); // Espero a un hijo
+            wait(NULL); // Espero a otro hijo
             std::cout << "Mis hijos ha acabado" << '\n';
         }
 
