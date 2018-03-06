@@ -39,7 +39,7 @@ int main(int argc, char const *argv[]) {
         return -1;
     }
 
-    const char *message = "Hola, hago peticiones 02734";
+    const char *message = "Hola, hago peticiones";
     /*
         sendto: Envía un mensaje a un receptor
             sockfd: Socket file descriptor
