@@ -81,5 +81,4 @@ int main(int argc, char const *argv[]) {
             sockfd: Socket file descriptor
     */
     close(sock);
-    close(sock);
 }
