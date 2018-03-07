@@ -4,9 +4,9 @@ using namespace std;
 
 class Person {
 public:
-    string name;
+    char nameInitial;
     int age;
-    Person(string n, int a) : name(n), age(a) {}
+    Person(char n, int a) : nameInitial(n), age(a) {}
 };
 
 template<typename T> // Se usa template para poder usar cualquier tipo de dato
@@ -38,9 +38,10 @@ int main () {
     cout << number << endl;
 
     // Escribir y leer una clase
-    Person person("Rigoberto", 24);
+    Person person('R', 24);
     write("binary", person);
-    read("binary", person);
-    cout << person.name << endl;
-    cout << person.age << endl;
+    Person person1(' ', 0);
+    read("binary", person1);
+    cout << person1.nameInitial << endl;
+    cout << person1.age << endl;
 }
