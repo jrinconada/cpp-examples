@@ -28,25 +28,6 @@ int main(int argc, char const *argv[]) {
         return -1;
     }
 
-    // Reutilizar IP y puerto
-    int enable = 1;
-    if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &enable, sizeof(enable))) {
-        std::cerr << "Error: puerto en uso" << '\n';
-        return -1;
-    }
-
-    // Asignar IP y puerto
-    struct sockaddr_in address;
-    address.sin_family = AF_INET; // Address Family IPv4
-    address.sin_addr.s_addr = INADDR_ANY; // IP de esta máquina
-    address.sin_port = htons(port); // Puerto de Endian de Host a Endian de Network
-
-    // Asociar IP y puerto al socket
-    if (bind(sock, (struct sockaddr *)&address, sizeof(address)) < 0) {
-        std::cerr << "Error: bind fallido" << '\n';
-        return -1;
-    }
-
     // Dirección del servidor
     struct sockaddr_in serverAddress;
     memset(&serverAddress, '0', sizeof(serverAddress)); // Limpia estructura serverAddress
@@ -68,23 +49,30 @@ int main(int argc, char const *argv[]) {
             addr: Dirección de envío
             addr_len: Tamaño de addr
     */
-    sendto(sock, message, strlen(message), 0, (struct sockaddr *)&address, sizeof(address));
+    sendto(sock, message, strlen(message), 0, (struct sockaddr *)&serverAddress, sizeof(serverAddress));
     std::cout << "Mensaje enviado: " << message << '\n';
 
+    std::cout << "Esperando mensaje..." << '\n';
+    struct sockaddr_in address;
+    char buffer[bufferSize] = {0};
+    socklen_t addrlen = sizeof(address);
     /*
-        read: Leer bytes del Socket
+        recvfrom: Leer bytes del Socket
             sockfd: Socket file descriptor
             buffer: Almacenamiento de los bytes leídos
             buffer_len: Tamaño del buffer
+            flags: Opciones (0 es sin opciones)
+            addr: Dirección de recepción (entrada)
+            addr_len: Tamaño de addr
         Devuelve el número de bytes leídos o -1 si hay un error
     */
-    char buffer[bufferSize] = {0};
-    int n = read(sock, buffer, bufferSize);
+    int n = recvfrom(sock, buffer, bufferSize, 0, (struct sockaddr *)&address, &addrlen);
     if (n > 0) {
         std::cout << "Mensaje recibido: " << buffer << '\n';
     } else {
         std::cerr << "Error: recepción del mensaje" << '\n';
     }
+    std::cout << "Recibida petición de " << inet_ntoa(address.sin_addr) << '\n';
 
     /*
         close: Cerrar socket
