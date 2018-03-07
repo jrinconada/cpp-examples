@@ -34,8 +34,9 @@ int main () {
     // Escribir y leer un número entero
     int number = 7;
     write("binary", number);
-    read("binary", number);
-    cout << number << endl;
+    int number2;
+    read("binary", number2);
+    cout << number2 << endl;
 
     // Escribir y leer una clase
     Person person('R', 24);
