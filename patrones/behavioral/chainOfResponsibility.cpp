@@ -5,7 +5,7 @@ protected:
     Shipment *next;
 public:
     Shipment() {
-        next = nullptr;
+        next = NULL;
     }
 
     virtual void request(int value) = 0; // Define una petición a la clase
@@ -21,7 +21,7 @@ public:
     void request(int value) {
         if(value <= maxWeight) { // Puede encargarse de la petición
             std::cout << "Se transportará en moto" << '\n';
-        } else if(next != nullptr) { // Delega al siguiente
+        } else if(next != NULL) { // Delega al siguiente
             next->request(value);
         } else { // No hay más posibilidades
             std::cout << "No se transportará" << '\n';
@@ -35,7 +35,7 @@ public:
     void request(int value) {
         if(value <= maxWeight) { // Puede encargarse de la petición
             std::cout << "Se transportará en furgoneta" << '\n';
-        } else if(next != nullptr) { // Delega al siguiente
+        } else if(next != NULL) { // Delega al siguiente
             next->request(value);
         } else { // No hay más posibilidades
             std::cout << "No se transportará" << '\n';
@@ -49,7 +49,7 @@ public:
     void request(int value) {
         if(value <= maxWeight) { // Puede encargarse de la petición
             std::cout << "Se transportará en barco" << '\n';
-        } else if(next != nullptr) { // Delega al siguiente
+        } else if(next != NULL) { // Delega al siguiente
             next->request(value);
         } else { // No hay más posibilidades
             std::cout << "No se transportará" << '\n';
@@ -57,7 +57,7 @@ public:
     }
 };
 
-int main () {
+int main() {
     Shipment *moto = new ByMotorcycle();
     Shipment *boat = new ByBoat();
     Shipment *car = new ByCar();
