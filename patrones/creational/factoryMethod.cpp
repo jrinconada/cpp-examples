@@ -38,7 +38,7 @@ public:
             case 'v':
             return new Van;
             default:
-            return nullptr;
+            return NULL;
         }
     }
 };

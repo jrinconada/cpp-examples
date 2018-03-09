@@ -11,7 +11,7 @@ public:
     Sheep(int a) : state(a) {}
     Sheep(const Sheep& other) : state(other.state) {}
 
-    Animal* clone(){
+    Animal* clone() {
          return new Sheep(*this); // Se llama al copy contructor del padre
     }
 };

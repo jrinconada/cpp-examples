@@ -1,7 +1,10 @@
 #include <iostream>
 using namespace std;
 
-class Product{
+class Product {
+    int i;
+	float f;
+	char c;
 public:
     class Builder; // Clase par contruir Product
 
@@ -11,16 +14,12 @@ public:
         cout << "c: " << this->c << endl;
     }
 private:
-	int i;
-	float f;
-	char c;
-
 	// Constructor con todas los parámetros necesarios
 	Product(int i, float f, char c) : i(i), f(f), c(c){}
 };
 
 // Implementación de la clase constructora
-class Product::Builder{
+class Product::Builder {
 private:
 	// variables needed for construction of object of Product class
 	int i;
@@ -38,23 +37,23 @@ public:
 
 	/*    Funciones para valores personalizados
 	      Devuelven el objeto para conveniencia de uso */
-	Builder& setI(int i){
+	Builder& setI(int i) {
         this->i = i;
         return *this;
     }
 
-	Builder& setF(float f){
+	Builder& setF(float f) {
         this->f = f;
         return *this;
     }
 
-	Builder& setC(char c){
+	Builder& setC(char c) {
         this->c = c;
         return *this;
     }
 
 	// Devulve el producto construido
-	Product build(){
+	Product build() {
 		// Este sería un buen sitio para comprobar si la variables con apropiadas entre si
 		return Product(this->i, this->f, this->c); // Constructor final
 	}
