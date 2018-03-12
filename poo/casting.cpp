@@ -1,4 +1,6 @@
 #include <iostream>
+#include <typeinfo>
+#include <stdlib.h>
 
 class Father {};
 class Son: public Father {};
