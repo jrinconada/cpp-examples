@@ -8,12 +8,15 @@ void printTime(std::chrono::system_clock::time_point time) {
 }
 
 int main() {
-    std::chrono::system_clock::time_point startTime = std::chrono::system_clock::now();
     printTime(std::chrono::system_clock::now());
+	clock_t start = clock(); // Número de ticks del reloj del sistema
 
     for (int i = 10; i > 0; i--) {
         std::cout << i << '\n';
         std::this_thread::sleep_for (std::chrono::seconds(1));
     }
     std::cout << "Ignición!" << '\n';
+
+	float elapsedTicks = (clock() - start);
+    std::cout << elapsedTicks / CLOCKS_PER_SEC << '\n';
 }
