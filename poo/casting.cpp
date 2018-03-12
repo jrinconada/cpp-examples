@@ -2,7 +2,9 @@
 #include <typeinfo>
 #include <stdlib.h>
 
-class Father {};
+class Father {
+    virtual ~Father() = 0; // Virtual puro
+};
 class Son: public Father {};
 
 class Dog {};
@@ -29,8 +31,8 @@ int main() {
     Son* son;
     // De clase hijo a padre conversión con posible pérdida de información
     father = dynamic_cast<Father*>(son);
-    // De clase padre a hijo no permitido: error en tiempo de compilación
-    //son = dynamic_cast<Son*>(father);
+    // De clase padre a hijo (permitido sólo si padre es virtual puro)
+    son = dynamic_cast<Son*>(father);
 
     // Casting estático: Con clases relacionadas sin comprobación de compatibilidad
     Dog* dog;
