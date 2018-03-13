@@ -14,11 +14,11 @@ long multiples(int n) {
 }
 
 int main() {
-    future<long> futurerResult = async(multiples, 3654546);
+    future<long> futureResult = async(multiples, 3654546);
 
     std::cout << "Calculando múltiplos..." << '\n';
     // El hilo actual se queda parado
-    long result = futurerResult.get(); // Sólo se puede llamar a get una vez
+    long result = futureResult.get(); // Sólo se puede llamar a get una vez
 
     std::cout << result << " múltiplos" << '\n';
 }
