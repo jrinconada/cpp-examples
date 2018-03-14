@@ -6,8 +6,8 @@
 using namespace std;
 
 void consume() {
-    std::cout << "Consumiendo...\n";
-    this_thread::sleep_for(std::chrono::seconds(3));
+    std::cout << "              Consumiendo...\n";
+    this_thread::sleep_for(std::chrono::seconds(1));
 }
 
 void produce() {
@@ -24,7 +24,7 @@ void notify() {
 }
 void wait() {
     unique_lock<mutex> lock(mu);
-    std::cout << "Esperando...\n";
+    std::cout << "              Esperando...\n";
     condition.wait(lock);
 }
 

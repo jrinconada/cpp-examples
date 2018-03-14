@@ -9,9 +9,9 @@ using namespace std;
 Semaphore semaphore;
 
 void consume(string id) {
-    std::cout << "C" + id + " consume..." + '\n';
+    std::cout << "              C" + id + " consume..." + '\n';
     this_thread::sleep_for(std::chrono::seconds(1));
-    std::cout << "C" + id + " fin." + '\n';
+    std::cout << "              C" + id + " fin." + '\n';
 }
 
 void produce(string id) {
@@ -22,7 +22,7 @@ void produce(string id) {
 
 void consumer(string id) {
     while (true) {
-        std::cout << "C" + id + " espera..." + '\n';
+        std::cout << "              C" + id + " espera..." + '\n';
         semaphore.wait();
         consume(id);
     }
