@@ -6,9 +6,8 @@ class Semaphore {
     mutex mu;
     condition_variable condition;
     unsigned int count;
-    unsigned int limit;
 public:
-    Semaphore(unsigned int limit = 1) : count(0), limit(limit) {}
+    Semaphore() : count(0) {}
 
     void notify() {
         unique_lock<mutex> lock(mu);

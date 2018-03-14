@@ -1,37 +1,49 @@
 #include <vector>
+#include <string>
+#include <mutex>
+#include "../../hilos/semaphore.cpp"
 #include "recipe.cpp"
 
+mutex knife;
+mutex oven;
+
+Semaphore semaphore;
+
 class Chef {
-    void cut(int cuttingTime) {
+    void cut(Recipe r) {
         lock_guard<mutex> guard(knife);
-        for (size_t i = 0; i < cuttingTime; i++) {
-            std::cout << "c" + name + " : " + (i + 1) + " seg" + '\n';
+        for (int i = 0; i < r.cuttingTime; i++) {
+            std::cout << name + " cortando " + r.name
+            + ", " + to_string(i + 1) + " seg\n";
             std::this_thread::sleep_for (std::chrono::seconds(1));
         }
     }
-    void bake(int bakingTime) {
+    void bake(Recipe r) {
         lock_guard<mutex> guard(oven);
-        for (size_t i = 0; i < bakingTime; i++) {
-            std::cout << "    h" + name + " : " + (i + 1) + " seg" + '\n';
+        for (int i = 0; i < r.bakingTime; i++) {
+            std::cout << name + " horneando " + r.name
+            + ", " + to_string(i + 1) + " seg\n";
             std::this_thread::sleep_for (std::chrono::seconds(1));
         }
     }
 public:
     vector<Recipe> recipes;
-    int name;
+    string name;
     string type;
 
-    Chef(int n, string t = "") : name(n), type(t) {}
+    Chef(string n, string t = "") : name(n), type(t) {}
 
     void cook() {
         for (auto& r : recipes) {
             if (type == "cutter") {
-                cut(r.cuttingTime);
+                cut(r);
+                semaphore.notify();
             } else if (type == "baker") {
-                bake(r.bakingTime);
+                semaphore.wait();
+                bake(r);
             } else {
-                cut(r.cuttingTime);
-                bake(r.bakingTime);
+                cut(r);
+                bake(r);
             }
         }
     }

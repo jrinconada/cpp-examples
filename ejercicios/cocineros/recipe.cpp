@@ -1,8 +1,9 @@
 
 class Recipe {
 public:
+    string name;
     int cuttingTime;
     int bakingTime;
     Recipe() {}
-    Recipe(int c, int b) : cuttingTime(c), bakingTime(b) {}
+    Recipe(string n, int c, int b) : name(n), cuttingTime(c), bakingTime(b) {}
 };
