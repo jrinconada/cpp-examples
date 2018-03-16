@@ -6,7 +6,6 @@ int main() {
     int fd[2]; // El pipe
     int readBytes; // Bytes leídos
     pid_t pid; // Process id
-    // char message[] = "Hola, soy tu hijo";
     char message[] = "Hola, soy tu hijo";
     char buffer[80];
 

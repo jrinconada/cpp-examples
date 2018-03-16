@@ -23,7 +23,7 @@ int main () {
             std::cout << "Estoy esperando a mis hijos..." << '\n';
             wait(NULL); // Espero a un hijo
             wait(NULL); // Espero a otro hijo
-            std::cout << "Mis hijos ha acabado" << '\n';
+            std::cout << "Mis hijos han acabado" << '\n';
         }
 
     }

@@ -5,7 +5,7 @@
 #include <sys/wait.h> // wait
 #include <fcntl.h> // O_CREAT, O_EXCL
 
-// Compilación con -lpthread
+// Compilación con -pthread
 int main() {
   sem_t *sem = sem_open("semaphore", O_CREAT|O_EXCL, 0, 1);
   sem_unlink("semaphore");
