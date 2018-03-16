@@ -18,11 +18,11 @@ void start(Chef c) {
 int main() {
     printTime(std::chrono::system_clock::now());
     Chef c1("Pep");
-    c1.recipes.push_back(Recipe("espárragos", 2, 3));
-    c1.recipes.push_back(Recipe("pollo", 1, 2));
-    Chef c2("                                 Ana");
-    c2.recipes.push_back(Recipe("pescado", 4, 2));
-    c2.recipes.push_back(Recipe("lasaña", 3, 1));
+    c1.recipes.push_back(new Recipe("espárragos", 2, 3));
+    c1.recipes.push_back(new Recipe("pollo", 1, 2));
+    Chef c2("                              Ana");
+    c2.recipes.push_back(new Recipe("pescado", 4, 2));
+    c2.recipes.push_back(new Recipe("lasaña", 3, 1));
 
     thread t1(start, c1);
     thread t2(start, c2);

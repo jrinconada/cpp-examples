@@ -10,24 +10,25 @@ mutex oven;
 Semaphore semaphore;
 
 class Chef {
-    void cut(Recipe r) {
+    void cut(Recipe* r) {
         lock_guard<mutex> guard(knife);
-        for (int i = 0; i < r.cuttingTime; i++) {
-            std::cout << name + " cortando " + r.name
+        for (int i = 0; i < r->cuttingTime; i++) {
+            std::cout << name + " cortando " + r->name
             + ", " + to_string(i + 1) + " seg\n";
-            std::this_thread::sleep_for (std::chrono::seconds(1));
+            std::this_thread::sleep_for(std::chrono::seconds(1));
         }
     }
-    void bake(Recipe r) {
+    void bake(Recipe* r) {
         lock_guard<mutex> guard(oven);
-        for (int i = 0; i < r.bakingTime; i++) {
-            std::cout << name + " horneando " + r.name
+        for (int i = 0; i < r->bakingTime; i++) {
+            std::cout << name + " horneando " + r->name
             + ", " + to_string(i + 1) + " seg\n";
-            std::this_thread::sleep_for (std::chrono::seconds(1));
+            std::this_thread::sleep_for(std::chrono::seconds(1));
         }
+        r->prom.set_value(r->name);
     }
 public:
-    vector<Recipe> recipes;
+    vector<Recipe*> recipes;
     string name;
     string type;
 
