@@ -27,7 +27,7 @@ int main(int argc, char const *argv[]) {
         return -1;
     }
 
-    // Asignar IP y puerto
+    // Asignar IP y puerto (localhost)
     struct sockaddr_in address;
     address.sin_family = AF_INET; // Address Family IPv4
     address.sin_addr.s_addr = INADDR_ANY; // IP de esta máquina
