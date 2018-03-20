@@ -12,9 +12,7 @@ int main(int argc, char const *argv[]) {
     char buffer[100];
     int readBytes = -1;
 
-    for (int i = 1; i < argc; i++) {
-        pipe(p);
-    }
+    pipe(p);
 
     for (int i = 1; i < argc; i++) {
         pid = fork();
@@ -42,9 +40,9 @@ int main(int argc, char const *argv[]) {
 
     for (int i = 1; i < argc; i++) {
         wait(&status);
-        std::cout << "Hijo terminado " << WEXITSTATUS(status) << '\n';
-        close(p[0]);
+        std::cout << "Hijo terminado " << WEXITSTATUS(status) << '\n';        
     }
+    close(p[0]);
     std::cout << "Mis hijos han terminado" << '\n';
 
 }

@@ -7,8 +7,6 @@
 #include <arpa/inet.h> // inet_ntoa
 
 int main(int argc, char const *argv[]) {
-    const int bufferSize = 1024;
-
     // Usar puerto 8888 o recibirlo como segundo parámetro del programa
     int port = 8888;
     if (argc > 2) {
@@ -25,7 +23,7 @@ int main(int argc, char const *argv[]) {
     // Reutilizar IP y puerto
     int enable = 1;
     if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &enable, sizeof(enable))) {
-        std::cerr << "Error: puerto en uso" << '\n';
+        std::cerr << "Error: dirección o puerto en uso" << '\n';
         return -1;
     }
 
@@ -42,6 +40,7 @@ int main(int argc, char const *argv[]) {
     }
 
     std::cout << "Esperando mensaje..." << '\n';
+    const int bufferSize = 1024;
     char buffer[bufferSize] = {0};
     socklen_t addrlen = sizeof(address);
     /*
