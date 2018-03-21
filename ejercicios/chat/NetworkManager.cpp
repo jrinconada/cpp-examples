@@ -9,7 +9,6 @@
 using namespace std;
 
 class NetworkManager {
-    static const int port = 8888;
     int sock;
 public:
     bool init() {
@@ -37,7 +36,7 @@ public:
         return true;
     }
 
-    Message* revieve() {
+    Message* recieve() {
         struct sockaddr_in address;
         const int bufferSize = 1024;
         char buffer[bufferSize] = {0};
@@ -58,7 +57,7 @@ public:
 
     void send(Message* message) {
         struct sockaddr_in address = message->user.address;
-        const char* m = "hola!!!!!";
+        const char* m = message->text.c_str();
 
         sendto(sock, m, strlen(m), 0, (struct sockaddr *)&address, sizeof(address));
     }
