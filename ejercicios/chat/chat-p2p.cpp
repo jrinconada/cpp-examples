@@ -47,7 +47,7 @@ void receiving(NetworkManager* nm) {
         Message* message = nm->recieve();
         contacts.add(message);
         std::cout << '\n' << message->getNick() << " dice " << message->getMessage() << '\n';
-        std::cout << myNick + " dice ";        
+        std::cout << myNick + " dice " << std::flush;
     }
 }
 
