@@ -93,9 +93,10 @@ int main(int argc, char const *argv[]) {
             sockfd: Socket file descriptor
             buffer: Almacenamiento de los bytes leídos
             buffer_len: Tamaño del buffer
+            flags: Opciones (0 es sin opciones)
         Devuelve el número de bytes leídos o -1 si hay un error
     */
-    int n = read(commSocket, buffer, bufferSize);
+    int n = recv(commSocket, buffer, bufferSize, 0);
     if (n > 0) {
         std::cout << "Mensaje recibido: " << buffer << '\n';
     } else {

@@ -17,12 +17,8 @@ void connection(int commSocket) {
         char buffer[bufferSize] = {0};
 
         while(recv(commSocket, buffer, sizeof(buffer), 0) <= 0);
-        // int n = recv(commSocket, buffer, sizeof(buffer), 0);
-        // if (n > 0) {
-            std::cout << "Mensaje recibido: " << buffer << '\n';
-        // } else {
-        //     std::cerr << "Error: recepción del mensaje" << '\n';
-        // }
+
+        std::cout << "Mensaje recibido: " << buffer << '\n';
 
         const char *message = "Hola, estoy aquí para servirte";
         send(commSocket, message, strlen(message), 0);
