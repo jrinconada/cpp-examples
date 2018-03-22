@@ -85,7 +85,7 @@ int main(int argc, char const *argv[]) {
         std::cerr << "Error: accept fallido" << '\n';
         return -1;
     }
-    std::cout << "Recibida petición de " << inet_ntoa(address.sin_addr) << '\n';
+    std::cout << "Conexión estrablecida con " << inet_ntoa(address.sin_addr) << '\n';
 
     char buffer[bufferSize] = {0};
     /*
