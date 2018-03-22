@@ -28,7 +28,7 @@ int main(int argc, char const *argv[]) {
             protocol: Con IPPROTO_TCP especificamos TCP
         Devuelve un número que representa el descriptor de fichero, -1 en caso de error
     */
-    int sock = socket(AF_INET, SOCK_STREAM, 0);
+    int sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (sock < 0) {
         std::cerr << "Error: creación de socket fallida" << '\n';
         return -1;

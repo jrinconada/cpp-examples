@@ -14,7 +14,7 @@ string getMessage() {
 
 string getNick() {
     string nick;
-    std::cout << "¿Nick? (t para enviar a todos) ";
+    std::cout << "¿Nick o IP? (t para enviar a todos) ";
     getline(cin, nick);
     return nick;
 }
@@ -27,23 +27,27 @@ void sendToAll(NetworkManager* nm, Message* message) {
     }
 }
 
-void send(NetworkManager* nm, Message* message, string nick) {
+void send(NetworkManager* nm, Message* message, string detination) {
     message->text = myNick + ">" + message->text; // Enviar a uno
 
-    User* u = contacts.get(nick);
-    if (u != NULL) {
-        message->user = *u;
-        nm->send(message);
-    } else {
-        std::cerr << "Usuario no encontrado" << '\n';
+    User* u = contacts.get(detination);
+    if (u == NULL) {
+        u = new User;
+        if (!u->setIP(detination)) {
+            std::cerr << "Usuario o IP inválida" << '\n';
+            return;
+        }
     }
+    message->user = *u;
+    nm->send(message);
 }
 
 void receiving(NetworkManager* nm) {
     while(true) {
         Message* message = nm->recieve();
         contacts.add(message);
-        std::cout << message->getNick() << " dice " << message->getMessage() << '\n';
+        std::cout << '\n' << message->getNick() << " dice " << message->getMessage() << '\n';
+        std::cout << myNick + " dice ";        
     }
 }
 
