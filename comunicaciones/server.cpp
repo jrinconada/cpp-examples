@@ -12,7 +12,7 @@ int main(int argc, char const *argv[]) {
     // Usar puerto 8888 o recibirlo como segundo parámetro del programa
     int port = 8888;
     if (argc > 1) {
-        port = atoi(argv[2]);
+        port = atoi(argv[1]);
     }
 
     /*
